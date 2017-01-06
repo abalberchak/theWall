@@ -1,0 +1,37 @@
+.green {
+	color: green;
+}
+.red {
+	color: red;
+}
+
+
+#top {
+	border-bottom: 1px solid black;
+}
+#heading {
+	display: inline-block;
+	/*vertical-align: top;*/
+}
+
+
+.logout {
+	display: inline-block;
+	vertical-align: top;
+	margin-top
+}
+
+.post {
+	border: solid 2px black;
+	margin-top: 20px;
+	padding: 10px 0px;
+	background-color: #0099ff;
+}
+
+.post h4 {
+	color: white;
+}
+
+.post h6 {
+	color: white;
+}

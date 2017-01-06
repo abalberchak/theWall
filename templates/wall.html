@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>{{ session['name'].title() }}'s Wall</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div id="top">
+	<h1 id="heading">CodingDojo Wall</h1>
+	<h3>Welcome {{ session['name'].title() }}!</h3>
+	<form action="/logout" method="post">
+		<button class="logout">Logout</button>
+	</form>
+	</div>
+	<div class="container">
+		<form action="/post_message" method="post">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="comment">Post a message:</label>
+						<textarea class="form-control" rows= "5" name="post_message"></textarea>
+					</div>		
+				</div>	
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<button>Post</button>
+				</div>
+			</div>
+		</form>
+
+		
+		{% for message in wall_messages %}
+		<div class="row">
+			<div class="col-md-12 post">
+				<h6>{{ message['first_name'] }} posted the following on {{ message['created_at'] }}:</h6>
+				<h4>{{ message['message'] }}</h4>
+				<form action="/post_comment" method="post">
+					<label for="comment">Post a comment:</label>
+							<input type="hidden" name="message_id" value="{{ message['id'] }}">
+							<textarea class="form-control" rows= "2" name="post_comment"></textarea>
+						<button>Comment on post</button>
+				</form>
+				{% for comment in wall_comments %}
+					{% if comment['messages_id'] == message['id'] %}
+
+					<h6>{{ comment['first_name'] }} posted the following on {{ comment['created_at'] }}:</h6>
+					<h4>{{ comment['comment'] }}</h4>
+					
+					{% if comment['users_id'] == session['id'] %}
+					<form action="/delete_comment/{{ comment['comment_id'] }}">
+					<button>Delete Comment</button>
+					</form>
+					{% endif %}
+					{% endif %}
+
+				{% endfor %}
+				
+
+				{% if message['users_id'] == session['id'] %}
+				
+
+				<form action="/delete_message/{{ message['id'] }}" method="post">
+					<button>Delete Post</button>
+				</form>
+
+				{% endif %}
+
+			</div>
+			
+		</div>
+
+		{% endfor %}
+	</div>
+
+</body>
+</html>
